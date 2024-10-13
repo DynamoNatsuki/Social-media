@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using SocialMedia.Models;
 
 namespace SocialMedia.Data
@@ -10,5 +11,6 @@ namespace SocialMedia.Data
             : base(options)
         {
         }
+        public DbSet<Broadcast> Broadcasts { get; set; }
     }
 }
