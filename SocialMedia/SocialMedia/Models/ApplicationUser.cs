@@ -6,5 +6,6 @@ namespace SocialMedia.Models
     {
         public string? Name { get; set; }
         public ICollection<Broadcast> Broadcasts { get; set; }
+        public ICollection<ApplicationUser> ListeningTo { get; set; } = new List<ApplicationUser>(); //I och med = new List så finns det alltid en lista, även om den är tom, och det hjälper till att göra applikation mer hanterbar genom att applikationen inte behvöer kolla varje gång vad som finns och inte. 
     }
 }

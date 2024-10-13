@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SocialMedia.Data;
 using SocialMedia.Models;
 using SocialMedia.ViewModels;
@@ -20,8 +21,15 @@ namespace SocialMedia.Controllers
             _dbContext = dbContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var user = await _userManager.GetUserAsync(User);
+            var dbUser = await _dbContext.Users.Where(u => u.Id == user.Id).FirstOrDefaultAsync();
+
+            var listeningTo = await _dbContext.Users.Where(u => u.Id == user.Id)
+                .SelectMany(u => u.ListeningTo)
+                .ToListAsync();
+
             return View();
         }
 
