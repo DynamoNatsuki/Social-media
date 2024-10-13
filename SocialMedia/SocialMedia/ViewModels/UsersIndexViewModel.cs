@@ -1,0 +1,11 @@
+﻿using SocialMedia.Models;
+
+namespace SocialMedia.ViewModels
+{
+    public class UsersIndexViewModel
+    {
+        public string Search { get; set; }
+        public List<ApplicationUser> Result { get; set; } = new List<ApplicationUser>(); 
+        //En lista måste sättas till propertyn för att vi ska kunna visa datan överhuvudtaget. Det bråkar annars om propertyn är tom. 
+    }
+}
