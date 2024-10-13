@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMedia.Data;
+using SocialMedia.Models;
 using SocialMedia.ViewModels;
 
 namespace SocialMedia.Controllers
@@ -8,10 +10,12 @@ namespace SocialMedia.Controllers
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UsersController(ApplicationDbContext dbContext)
+        public UsersController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             _dbContext = dbContext;   
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index(UsersIndexViewModel viewModel)
@@ -24,6 +28,22 @@ namespace SocialMedia.Controllers
                 viewModel.Result = users;
             }
             
+            return View(viewModel);
+        }
+
+        [Route("/Users/{id}")]
+        public async Task<IActionResult> ShowUser (string id)
+        {
+            var broadcasts = await _dbContext.Broadcasts.Where(b => b.User.Id == id)
+                .OrderByDescending(b => b.Published).ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
+
+            var viewModel = new UsersShowUserViewModel()
+            {
+                Broadcasts = broadcasts,
+                User = user,
+            };
+
             return View(viewModel);
         }
     }
