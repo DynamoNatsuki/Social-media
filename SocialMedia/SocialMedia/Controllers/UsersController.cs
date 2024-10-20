@@ -61,5 +61,20 @@ namespace SocialMedia.Controllers
 
             return Redirect("/");
         }
+
+        [HttpPost, Route("/Users/Unlisten")]
+        public async Task<IActionResult> UnlistenToUser(UsersListenToUserViewModel viewModel)
+        {
+            var loggedInUser = await _userManager.GetUserAsync(User);
+            var userToUnlistenTo = await _dbContext.Users.Where(u => u.Id == viewModel.UserId)
+                .FirstOrDefaultAsync();
+
+            loggedInUser.ListeningTo.Remove(userToUnlistenTo);
+
+            await _userManager.UpdateAsync(loggedInUser);
+            await _dbContext.SaveChangesAsync();
+
+            return Redirect("/");
+        }
     }
 }

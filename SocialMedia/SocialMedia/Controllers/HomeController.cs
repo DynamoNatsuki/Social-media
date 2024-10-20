@@ -24,12 +24,17 @@ namespace SocialMedia.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return View();
+            }
+
             var dbUser = await _dbContext.Users.Where(u => u.Id == user.Id).FirstOrDefaultAsync();
 
             var broadcasts = await _dbContext.Users.Where(u => u.Id == user.Id)
                 .SelectMany(u => u.ListeningTo)
                 .SelectMany(user => user.Broadcasts)
-                .Include(b =>b.User)
+                .Include(b => b.User)
                 .OrderByDescending(b => b.Published)
                 .ToListAsync();
 
@@ -39,6 +44,7 @@ namespace SocialMedia.Controllers
             };
 
             return View(viewModel);
+
         }
 
         public IActionResult Privacy()

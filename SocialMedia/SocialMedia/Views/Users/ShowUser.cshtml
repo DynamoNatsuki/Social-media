@@ -18,6 +18,14 @@
         </form>
     }
 
+    @if (user.Id != Model.User.Id)
+    {
+        <form action="/Users/Unlisten" method="post">
+            <input type="hidden" name="UserId" value="@Model.User.Id" />
+            <input type="submit" value="Unlisten to" />
+        </form>
+    }
+
     @foreach (var broadcast in Model.Broadcasts)
     {
         <p>

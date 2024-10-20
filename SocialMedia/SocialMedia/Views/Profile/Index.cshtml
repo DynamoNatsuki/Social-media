@@ -6,4 +6,16 @@
        <input name="Name" value="@Model.Name" placeholder="Name"/>
        <input type="submit" value="Save" />
    </form>
+
+
+  <h1>Following</h1>
+
+    @foreach (var ListeningTo in Model.ListeningTo)
+    {
+        <p>
+            <b>
+                <a href="/Users/@ListeningTo.Id">@ListeningTo.Name </a>
+            </b>
+        </p>
+    }
 </div>
